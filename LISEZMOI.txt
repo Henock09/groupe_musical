@@ -1,0 +1,47 @@
+APPLICATION WEB DU GROUPE MUSICAL — HTML / CSS / JavaScript / PHP
+=================================================================
+
+INSTALLATION (hébergement PHP classique, ex. o2switch, Hostinger, cPanel…)
+1. PHP 8.1 ou plus avec l'extension « pdo_sqlite » (presque toujours disponible).
+2. Envoyez tout le dossier sur le serveur (FTP ou gestionnaire de fichiers).
+3. Le dossier « data/ » doit être modifiable par PHP (droits 775 ou 755 selon l'hébergeur).
+4. Ouvrez l'adresse du site : la page d'installation s'affiche. Créez votre compte d'ADMINISTRATEUR PRINCIPAL
+   (nom, e-mail, identifiant, mot de passe). Cette page se verrouille ensuite.
+5. Réglez le groupe dans « Paramètres » (nom, devise, heure des séances, pénalités, cotisation, inscriptions).
+
+EN LOCAL (sur votre PC) :  php -S localhost:8000   puis http://localhost:8000
+Pour repartir de zéro : arrêtez le serveur et supprimez data/groupe.sqlite.
+
+E-MAILS (mot de passe oublié, validation d'inscription) — fichier inc/config.php
+- Sur un hébergement : mettez dans MAIL_FROM une adresse de VOTRE domaine (ex. noreply@monsite.com).
+  Si les e-mails arrivent en spam ou pas du tout, utilisez un compte SMTP (SMTP_HOST, SMTP_USER, SMTP_PASS).
+- En local : l'envoi échoue normalement ; tout e-mail non parti est écrit dans data/mail.log.
+  Ouvrez ce fichier pour copier le lien de réinitialisation. Vous pouvez aussi configurer Gmail
+  (smtp.gmail.com, port 587, TLS, « mot de passe d'application » Google) pour tester de vrais envois.
+
+INSCRIPTION DES MEMBRES (Paramètres > Inscriptions, désactivable à tout moment)
+- Option 1, validation : la personne s'inscrit sans code ; sa demande apparaît dans « Membres » ; un administrateur
+  l'accepte ou la refuse (la personne est prévenue par e-mail).
+- Option 2, code d'invitation : avec le bon code (ou le lien contenant le code, affiché dans Paramètres), le compte est
+  créé immédiatement. Le code peut être régénéré à tout moment (l'ancien cesse de fonctionner).
+- Un administrateur peut aussi ajouter un membre lui-même (mot de passe provisoire à changer à la 1re connexion).
+
+RÔLES ET DROITS
+- Administrateur principal (vous) : tous les droits ; seul à nommer, retirer ou limiter les administrateurs (7 max.).
+- Administrateurs : chacun reçoit UNIQUEMENT les droits que vous cochez (page « Administrateurs ») :
+    membres + demandes d'inscription / cotisations / encaissements / séances et appel /
+    pardon des pénalités / dons / paramètres + code d'invitation.
+  Une page ou un chiffre dont l'administrateur n'a pas le droit est masqué ET refusé côté serveur.
+- Membres : voient leurs séances, signalent leur retard ou leur absence (avant le début de la séance), consultent leurs
+  propres cotisations et pénalités et le total des dons (pas les donateurs). Ils ne peuvent modifier QUE leur mot de passe
+  (et ajouter leur e-mail de récupération s'ils n'en ont pas). Nom, téléphone, e-mail : via un administrateur.
+
+FONCTIONNEMENT
+- Cotisations mensuelles et extraordinaires (concert, semaine de la musique…), montant par membre, paiements partiels.
+- Séances du samedi et du dimanche soir créées automatiquement ; annulation avec motif (aucune pénalité) ;
+  séances extraordinaires créées par les administrateurs autorisés.
+- Appel : un retard / une absence signalé à l'avance est excusé ; sinon une pénalité est créée (montants dans Paramètres).
+- Pénalités : à payer / payées / annulées (pardon). Dons : argent ou nature.
+
+SAUVEGARDE : tout est dans UN fichier : data/groupe.sqlite. Copiez-le régulièrement.
+SÉCURITÉ : utilisez HTTPS ; data/ et inc/ sont fermés par .htaccess (Apache). Sur Nginx, interdisez leur accès web.
